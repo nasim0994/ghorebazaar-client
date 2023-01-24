@@ -7,12 +7,11 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        mytheme: {
+        light: {
           primary: "#460065",
           secondary: "#550060",
-          third: "#020F2A",
-          accent: "#37cdbe",
-          neutral: "#3d4451",
+          neutral: "#333",
+          "neutral-content": "#54595f",
           "base-100": "#ffffff",
         },
       },
