@@ -1,0 +1,27 @@
+.account-form{
+    position: absolute;
+    top: 40px;
+    right: -4%;
+    width: 350px;
+    background: #fff;
+    z-index: 10;
+
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height .3s;
+}
+
+.account-fixed-form{
+    position: fixed;
+    top: 98px;
+    right: 180px;
+    width: 350px;
+    background: #fff;
+    z-index: 10;
+
+}
+
+.header-signin:hover .account-form{
+    max-height: 300px;
+    z-index: 10;
+}
