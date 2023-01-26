@@ -20,8 +20,40 @@
     z-index: 10;
 
 }
-
 .header-signin:hover .account-form{
     max-height: 300px;
     z-index: 10;
+}
+
+/* search-category */
+.search-category{
+    position: absolute;
+    right: 48px;
+    top: 44px;
+    background: #fff;
+    width: 160px;
+    /* padding: 10px; */
+    overflow-y: auto;
+    max-height: 0px;
+}
+.search-category-show{
+    max-height: 350px;
+}
+.search-category::-webkit-scrollbar{
+    width: 3px;
+}
+.search-category::-webkit-scrollbar-thumb {
+    background: #9999999f;
+}
+.search-category::-webkit-scrollbar-thumb:hover {
+    background: #888888a7;
+}
+
+.search-category ul li{
+    padding: 5px;
+    cursor: pointer;
+}
+
+.search-category ul li:hover{
+    background: #ddd;
 }

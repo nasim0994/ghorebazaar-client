@@ -12,22 +12,93 @@ import { FiHeart, FiMenu } from "react-icons/fi";
 import { BsBag } from "react-icons/bs";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { TbCurrencyTaka } from "react-icons/tb";
+const categorys = [
+  {
+    item: "Baby Products",
+    dropdown: [
+      {
+        item: "Baby Accessories",
+      },
+      {
+        item: "Baby Food",
+        subDropdown: [
+          { item: "Baby Cereal" },
+          { item: "Baby Honey" },
+          { item: "Formula Milk" },
+          { item: "Baby Biscotti" },
+          { item: "Juise & Pure" },
+        ],
+      },
+      {
+        item: "Bath & Skincare",
+      },
+      {
+        item: "Oral Care",
+      },
+    ],
+  },
+  {
+    item: "Chocolates",
+    dropdown: [
+      {
+        item: "Cadbury",
+      },
+      {
+        item: "Candy",
+      },
+      {
+        item: "Kit-Kat",
+      },
+      {
+        item: "Lollipops",
+      },
+      {
+        item: "Mints",
+      },
+    ],
+  },
+  {
+    item: "Sports",
+  },
+];
 
 const Header = () => {
+  const [searchCategory, setSearchCategory] = useState(false);
   const [fixedForm, setFixedForm] = useState(false);
+  const [categoryInput, setCategoryInput] = useState("");
+  let menuRef = useRef();
+  let fixedFormRef = useRef();
 
+  const handelCategoryList = (e) => {
+    setSearchCategory(false);
+    setCategoryInput(e.target.innerText);
+  };
+
+  // Outside click to hide category Lists
   useEffect(() => {
-    document.onclick = function (e) {
-      if (
-        e.target.id !== "fixedFormInput1" &&
-        e.target.id !== "fixedFormInput2"
-      ) {
-        setFixedForm(false);
+    let handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setSearchCategory(false);
       }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
     };
   }, []);
 
-  console.log(fixedForm);
+  //Login Form Hide Click to Other side
+  useEffect(() => {
+    let handelForm = (e) => {
+      if (!fixedFormRef.current.contains(e.target)) {
+        setFixedForm(false);
+      }
+    };
+    document.addEventListener("mousedown", handelForm);
+    return () => {
+      document.removeEventListener("mousedown", handelForm);
+    };
+  }, []);
 
   return (
     <header>
@@ -95,15 +166,71 @@ const Header = () => {
             {/* Center */}
             <div className="w-[60%] hidden lg:block">
               <form>
-                <div className="flex items-center">
+                <div className="flex items-center relative">
                   <input
                     type="text"
                     placeholder="Search for Products"
-                    className="w-[90%] outline-none px-4 py-2 border-2"
+                    className="w-[73%] outline-none px-4 py-2 pr-0 border-2"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Select Category"
+                    className="p-2 border-2 outline-none border-l-0 w-40 cursor-pointer text-neutral-content/80"
+                    readOnly
+                    value={categoryInput}
+                    onClick={() =>
+                      setSearchCategory((searchCategory) => !searchCategory)
+                    }
                   />
                   <button className="text-2xl bg-primary text-base-100 w-12 h-[42px] flex justify-center items-center">
                     <BiSearchAlt2 />
                   </button>
+
+                  {/* Search Category */}
+                  <div
+                    className={`${
+                      searchCategory
+                        ? "search-category search-category-show shadow-md"
+                        : "search-category"
+                    }`}
+                    id="searchCategoryList"
+                    ref={menuRef}
+                  >
+                    <ul>
+                      {categorys.map((li) =>
+                        li.dropdown && li.dropdown.length > 0 ? (
+                          <>
+                            <li onClick={handelCategoryList}>{li.item}</li>
+                            <ul className="pl-4">
+                              {li.dropdown.map((subLi) =>
+                                subLi.subDropdown &&
+                                subLi.subDropdown.length > 0 ? (
+                                  <>
+                                    <li onClick={handelCategoryList}>
+                                      {subLi.item}
+                                    </li>
+                                    <ul className="pl-4">
+                                      {subLi.subDropdown.map((subsubLi) => (
+                                        <li onClick={handelCategoryList}>
+                                          {subsubLi.item}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </>
+                                ) : (
+                                  <li onClick={handelCategoryList}>
+                                    {subLi.item}
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </>
+                        ) : (
+                          <li onClick={handelCategoryList}>{li.item}</li>
+                        )
+                      )}
+                    </ul>
+                  </div>
                 </div>
               </form>
             </div>
@@ -139,7 +266,8 @@ const Header = () => {
                         type="email"
                         name="email"
                         className="border w-full outline-none px-2 py-1"
-                        id="fixedFormInput1"
+                        // id="fixedFormInput1"
+                        ref={fixedFormRef}
                         required
                         onClick={() => setFixedForm(true)}
                       />
@@ -153,7 +281,8 @@ const Header = () => {
                         type="password"
                         name="password"
                         className="border w-full outline-none px-2 py-1"
-                        id="fixedFormInput2"
+                        // id="fixedFormInput2"
+                        ref={fixedFormRef}
                         required
                         onClick={() => setFixedForm(true)}
                       />
